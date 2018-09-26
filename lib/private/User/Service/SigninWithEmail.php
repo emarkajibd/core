@@ -228,12 +228,15 @@ class SigninWithEmail {
 		if ($user instanceof User) {
 			if ($groups !== null) {
 				foreach ($groups as $groupName) {
-					$group = $this->groupManager->get($groupName);
+					if ($groupName !== null) {
+						$group = $this->groupManager->get($groupName);
 
-					if (empty($group)) {
-						$group = $this->groupManager->createGroup($groupName);
+						if (empty($group)) {
+							$group = $this->groupManager->createGroup($groupName);
+						}
+						$group->addUser($user);
+						$this->log->info('Added userid ' . $user->getUID() . ' to group ' . $group->getGID());
 					}
-					$group->addUser($user);
 				}
 			}
 			/**

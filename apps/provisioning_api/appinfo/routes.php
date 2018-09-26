@@ -27,6 +27,7 @@
 
 namespace OCA\Provisioning_API\AppInfo;
 
+use OC\User\Service\SigninWithEmail;
 use OCA\Provisioning_API\Apps;
 use OCA\Provisioning_API\Groups;
 use OCA\Provisioning_API\Users;
@@ -37,6 +38,15 @@ $users = new Users(
 	\OC::$server->getUserManager(),
 	\OC::$server->getGroupManager(),
 	\OC::$server->getUserSession(),
+	new SigninWithEmail(
+		\OC::$server->getUserSession(), \OC::$server->getGroupManager(),
+		\OC::$server->getURLGenerator(), \OC::$server->getUserManager(),
+		\OC::$server->getSecureRandom(), new \OC_Defaults(),
+		\OC::$server->getTimeFactory(), \OC::$server->getMailer(),
+		\OC::$server->getL10N('settings'), \OC::$server->getLogger(),
+		\OC::$server->getConfig(), \OC::$server->getAppManager(),
+		\OC::$server->getAvatarManager(), \OC::$server->getEventDispatcher()
+	),
 	\OC::$server->getLogger(),
 	\OC::$server->getTwoFactorAuthManager()
 );
